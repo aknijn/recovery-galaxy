@@ -1,0 +1,821 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "performs automatic construction and variant analysis of SARS-CoV-2 genomes",
+    "format-version": "0.1",
+    "name": "SARS-CoV-2_RECoVERY_3.1",
+    "steps": {
+        "0": {
+            "annotation": "",
+            "content_id": "sarscov2genomes",
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool SARS CoV-2 Genomes",
+                    "name": "input1"
+                },
+                {
+                    "description": "runtime parameter for tool SARS CoV-2 Genomes",
+                    "name": "input2"
+                }
+            ],
+            "label": null,
+            "name": "SARS CoV-2 Genomes",
+            "outputs": [
+                {
+                    "name": "strainname",
+                    "type": "txt"
+                },
+                {
+                    "name": "librarytype",
+                    "type": "txt"
+                },
+                {
+                    "name": "human_genome_aligned",
+                    "type": "bam"
+                },
+                {
+                    "name": "covidref_aligned",
+                    "type": "bam"
+                },
+                {
+                    "name": "reference_genbank",
+                    "type": "genbank"
+                },
+                {
+                    "name": "reference_fasta",
+                    "type": "fasta"
+                },
+                {
+                    "name": "proteinentcovid19",
+                    "type": "fasta"
+                }
+            ],
+            "position": {
+                "left": 200,
+                "top": 200
+            },
+            "post_job_actions": {
+                "HideDatasetActioncovidref_aligned": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "covidref_aligned"
+                },
+                "HideDatasetActionhuman_genome_aligned": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "human_genome_aligned"
+                },
+                "HideDatasetActionlibrarytype": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "librarytype"
+                },
+                "HideDatasetActionproteinentcovid19": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "proteinentcovid19"
+                },
+                "HideDatasetActionreference_fasta": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "reference_fasta"
+                },
+                "HideDatasetActionreference_genbank": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "reference_genbank"
+                },
+                "HideDatasetActionstrainname": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "strainname"
+                }
+            },
+            "tool_id": "sarscov2genomes",
+            "tool_state": "{\"input1\": {\"__class__\": \"RuntimeValue\"}, \"input2\": {\"__class__\": \"RuntimeValue\"}, \"library\": \"iont\", \"strain\": \"NC_045512\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1",
+            "type": "tool",
+            "uuid": "1b74025b-57a2-4bdf-9e6a-69d3cd52553e",
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "",
+            "content_id": "ivar_covid_aries_consensus",
+            "errors": null,
+            "id": 1,
+            "input_connections": {
+                "input_bam": {
+                    "id": 0,
+                    "output_name": "covidref_aligned"
+                },
+                "librarytype": {
+                    "id": 0,
+                    "output_name": "librarytype"
+                },
+                "strainname": {
+                    "id": 0,
+                    "output_name": "strainname"
+                },
+                "uploaded_fasta": {
+                    "id": 0,
+                    "output_name": "reference_fasta"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "ivar covid aries consensus",
+            "outputs": [
+                {
+                    "name": "consensus",
+                    "type": "fasta"
+                }
+            ],
+            "position": {
+                "left": 391.8833312988281,
+                "top": 200
+            },
+            "post_job_actions": {},
+            "tool_id": "ivar_covid_aries_consensus",
+            "tool_state": "{\"input_bam\": {\"__class__\": \"ConnectedValue\"}, \"librarytype\": {\"__class__\": \"ConnectedValue\"}, \"min_depth\": \"30\", \"min_freq\": \"0.2\", \"min_qual\": \"20\", \"strainname\": {\"__class__\": \"ConnectedValue\"}, \"uploaded_fasta\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1+galaxy0",
+            "type": "tool",
+            "uuid": "883fedc6-1f38-43a0-ae2c-324cef6aebd8",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "consensus",
+                    "uuid": "bf352306-15db-4e5b-a78e-d0669c84855b"
+                }
+            ]
+        },
+        "2": {
+            "annotation": "",
+            "content_id": "ivar_covid_variants",
+            "errors": null,
+            "id": 2,
+            "input_connections": {
+                "input_bam": {
+                    "id": 0,
+                    "output_name": "covidref_aligned"
+                },
+                "librarytype": {
+                    "id": 0,
+                    "output_name": "librarytype"
+                },
+                "ref": {
+                    "id": 0,
+                    "output_name": "reference_fasta"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "ivar covid variants",
+            "outputs": [
+                {
+                    "name": "output_max_variants",
+                    "type": "tabular"
+                },
+                {
+                    "name": "output_min_variants",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 391.8833312988281,
+                "top": 396.58331298828125
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput_max_variants": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output_max_variants"
+                },
+                "HideDatasetActionoutput_min_variants": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output_min_variants"
+                }
+            },
+            "tool_id": "ivar_covid_variants",
+            "tool_state": "{\"input_bam\": {\"__class__\": \"ConnectedValue\"}, \"librarytype\": {\"__class__\": \"ConnectedValue\"}, \"ref\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.1+galaxy0",
+            "type": "tool",
+            "uuid": "42729bcc-2b66-4700-b83a-8a06c00ae6fe",
+            "workflow_outputs": []
+        },
+        "3": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff_build_gb/4.3+T.galaxy4",
+            "errors": null,
+            "id": 3,
+            "input_connections": {
+                "input_type|input_gbk": {
+                    "id": 0,
+                    "output_name": "reference_genbank"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SnpEff build:",
+            "outputs": [
+                {
+                    "name": "snpeff_output",
+                    "type": "snpeffdb"
+                }
+            ],
+            "position": {
+                "left": 391.8833312988281,
+                "top": 565.683349609375
+            },
+            "post_job_actions": {
+                "HideDatasetActionsnpeff_output": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "snpeff_output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff_build_gb/4.3+T.galaxy4",
+            "tool_shed_repository": {
+                "changeset_revision": "74aebe30fb52",
+                "name": "snpeff",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"codon_table\": \"Standard\", \"genome_version\": \"CovidREF.GB\", \"input_type\": {\"input_type_selector\": \"gb\", \"__current_case__\": 0, \"input_gbk\": {\"__class__\": \"ConnectedValue\"}, \"fasta\": \"no\", \"remove_version\": \"true\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "4.3+T.galaxy4",
+            "type": "tool",
+            "uuid": "6c222691-dde4-4e77-876e-b099724ff5f9",
+            "workflow_outputs": []
+        },
+        "4": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/qualimap_bamqc/qualimap_bamqc/2.2.2d+galaxy1",
+            "errors": null,
+            "id": 4,
+            "input_connections": {
+                "input1": {
+                    "id": 0,
+                    "output_name": "covidref_aligned"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "QualiMap BamQC",
+            "outputs": [
+                {
+                    "name": "raw_data",
+                    "type": "input"
+                },
+                {
+                    "name": "output_html",
+                    "type": "html"
+                }
+            ],
+            "position": {
+                "left": 391.8833312988281,
+                "top": 673.816650390625
+            },
+            "post_job_actions": {
+                "HideDatasetActionraw_data": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "raw_data"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/qualimap_bamqc/qualimap_bamqc/2.2.2d+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "e7fd6754d093",
+                "name": "qualimap_bamqc",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"duplicate_skipping\": [\"0\"], \"input1\": {\"__class__\": \"ConnectedValue\"}, \"per_base_coverage\": \"false\", \"plot_specific\": {\"n_bins\": \"6000\", \"paint_chromosome_limits\": \"true\", \"genome_gc_distr\": null, \"homopolymer_size\": \"3\"}, \"stats_regions\": {\"region_select\": \"all\", \"__current_case__\": 0}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "2.2.2d+galaxy1",
+            "type": "tool",
+            "uuid": "0808ba88-b5c8-484f-b23d-6c0e595a27a3",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "output_html",
+                    "uuid": "85376d8e-28ce-4995-9999-48ff23990e2b"
+                }
+            ]
+        },
+        "5": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/devteam/ncbi_blast_plus/ncbi_blastn_wrapper/0.2.00",
+            "errors": null,
+            "id": 5,
+            "input_connections": {
+                "db_opts|subject": {
+                    "id": 1,
+                    "output_name": "consensus"
+                },
+                "query": {
+                    "id": 0,
+                    "output_name": "proteinentcovid19"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "NCBI BLAST+ blastn",
+            "outputs": [
+                {
+                    "name": "output1",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 583.7833251953125,
+                "top": 200
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput1": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output1"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/devteam/ncbi_blast_plus/ncbi_blastn_wrapper/0.2.00",
+            "tool_shed_repository": {
+                "changeset_revision": "7538e2bfcd41",
+                "name": "ncbi_blast_plus",
+                "owner": "devteam",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"adv_opts\": {\"adv_opts_selector\": \"advanced\", \"__current_case__\": 1, \"filter_query\": \"true\", \"strand\": \"-strand plus\", \"max_hits\": \"1\", \"identity_cutoff\": \"70.0\", \"word_size\": \"0\", \"ungapped\": \"false\", \"parse_deflines\": \"false\", \"adv_optional_id_files_opts\": {\"adv_optional_id_files_opts_selector\": \"none\", \"__current_case__\": 0}, \"qcov_hsp_perc\": \"80.0\"}, \"blast_type\": \"megablast\", \"db_opts\": {\"db_opts_selector\": \"file\", \"__current_case__\": 2, \"database\": \"\", \"histdb\": \"\", \"subject\": {\"__class__\": \"ConnectedValue\"}}, \"evalue_cutoff\": \"0.001\", \"output\": {\"out_format\": \"ext\", \"__current_case__\": 1}, \"query\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.2.00",
+            "type": "tool",
+            "uuid": "b490947e-cefe-401a-9cd1-1f1b675cd615",
+            "workflow_outputs": []
+        },
+        "6": {
+            "annotation": "",
+            "content_id": "pangolin",
+            "errors": null,
+            "id": 6,
+            "input_connections": {
+                "query": {
+                    "id": 1,
+                    "output_name": "consensus"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "PANGOLIN",
+            "outputs": [
+                {
+                    "name": "lineage",
+                    "type": "csv"
+                },
+                {
+                    "name": "alignment",
+                    "type": "csv"
+                }
+            ],
+            "position": {
+                "left": 583.7833251953125,
+                "top": 342.29998779296875
+            },
+            "post_job_actions": {
+                "HideDatasetActionalignment": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "alignment"
+                }
+            },
+            "tool_id": "pangolin",
+            "tool_state": "{\"maxambig\": \"0.5\", \"minlength\": \"10000\", \"query\": {\"__class__\": \"ConnectedValue\"}, \"threads\": \"1\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3",
+            "type": "tool",
+            "uuid": "044a94c6-4b06-46b4-9f24-f1feceb8419b",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "lineage",
+                    "uuid": "ad3777e1-2264-4999-92aa-dbde7ec845ba"
+                }
+            ]
+        },
+        "7": {
+            "annotation": "",
+            "content_id": "ivar_variants_to_vcf",
+            "errors": null,
+            "id": 7,
+            "input_connections": {
+                "input": {
+                    "id": 2,
+                    "output_name": "output_max_variants"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "iVar Variants to VCF",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "vcf"
+                }
+            ],
+            "position": {
+                "left": 583.7833251953125,
+                "top": 484.61669921875
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "ivar_variants_to_vcf",
+            "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"min_allele_freq\": \"0.5\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "760cad44-e0b6-478b-92ac-4d55b3173f9d",
+            "workflow_outputs": []
+        },
+        "8": {
+            "annotation": "",
+            "content_id": "ivar_variants_to_vcf",
+            "errors": null,
+            "id": 8,
+            "input_connections": {
+                "input": {
+                    "id": 2,
+                    "output_name": "output_min_variants"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "iVar Variants to VCF",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "vcf"
+                }
+            ],
+            "position": {
+                "left": 583.7833251953125,
+                "top": 579.3499755859375
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "ivar_variants_to_vcf",
+            "tool_state": "{\"input\": {\"__class__\": \"ConnectedValue\"}, \"min_allele_freq\": \"0.1\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "0.1.0",
+            "type": "tool",
+            "uuid": "d7bac206-ecc4-4df3-82c3-4488b9f5fbf7",
+            "workflow_outputs": []
+        },
+        "9": {
+            "annotation": "",
+            "content_id": "blast_to_fasta",
+            "errors": null,
+            "id": 9,
+            "input_connections": {
+                "input_tab": {
+                    "id": 5,
+                    "output_name": "output1"
+                }
+            },
+            "inputs": [
+                {
+                    "description": "runtime parameter for tool blast to fasta",
+                    "name": "input_tab"
+                }
+            ],
+            "label": null,
+            "name": "blast to fasta",
+            "outputs": [
+                {
+                    "name": "output_fasta",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 776.6666870117188,
+                "top": 200
+            },
+            "post_job_actions": {
+                "RenameDatasetActionoutput_fasta": {
+                    "action_arguments": {
+                        "newname": "ORF Annotation"
+                    },
+                    "action_type": "RenameDatasetAction",
+                    "output_name": "output_fasta"
+                }
+            },
+            "tool_id": "blast_to_fasta",
+            "tool_state": "{\"input_tab\": {\"__class__\": \"RuntimeValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3.2+galaxy0",
+            "type": "tool",
+            "uuid": "90084944-fa12-41f7-8153-5eb819fa1ac6",
+            "workflow_outputs": [
+                {
+                    "label": "",
+                    "output_name": "output_fasta",
+                    "uuid": "3f329506-5c22-45ad-93ff-c8ef946a730b"
+                }
+            ]
+        },
+        "10": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+            "errors": null,
+            "id": 10,
+            "input_connections": {
+                "input": {
+                    "id": 7,
+                    "output_name": "output"
+                },
+                "snpDb|snpeff_db": {
+                    "id": 3,
+                    "output_name": "snpeff_output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SnpEff eff:",
+            "outputs": [
+                {
+                    "name": "snpeff_output",
+                    "type": "vcf"
+                },
+                {
+                    "name": "statsFile",
+                    "type": "html"
+                }
+            ],
+            "position": {
+                "left": 775.6666870117188,
+                "top": 294.73333740234375
+            },
+            "post_job_actions": {
+                "HideDatasetActionsnpeff_output": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "snpeff_output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "74aebe30fb52",
+                "name": "snpeff",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"annotations\": [\"-classic\", \"-hgvsOld\", \"-hgvs1LetterAa\"], \"chr\": \"\", \"csvStats\": \"false\", \"filter\": {\"specificEffects\": \"no\", \"__current_case__\": 0}, \"filterOut\": [\"-no-downstream\", \"-no-intergenic\", \"-no-intron\", \"-no-upstream\", \"-no-utr\"], \"generate_stats\": \"true\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"inputFormat\": \"vcf\", \"intervals\": {\"__class__\": \"RuntimeValue\"}, \"noLog\": \"true\", \"offset\": \"default\", \"outputConditional\": {\"outputFormat\": \"vcf\", \"__current_case__\": 0}, \"snpDb\": {\"genomeSrc\": \"custom\", \"__current_case__\": 3, \"snpeff_db\": {\"__class__\": \"ConnectedValue\"}, \"codon_table\": \"Standard\"}, \"spliceRegion\": {\"setSpliceRegions\": \"no\", \"__current_case__\": 0}, \"spliceSiteSize\": null, \"transcripts\": {\"__class__\": \"RuntimeValue\"}, \"udLength\": \"0\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "4.3+T.galaxy1",
+            "type": "tool",
+            "uuid": "9b78f91d-a5a6-4e7b-ac98-212c27b5d0c5",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "statsFile",
+                    "uuid": "bd1dd7d1-7d05-4646-929d-d0b92647b58a"
+                }
+            ]
+        },
+        "11": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+            "errors": null,
+            "id": 11,
+            "input_connections": {
+                "input": {
+                    "id": 8,
+                    "output_name": "output"
+                },
+                "snpDb|snpeff_db": {
+                    "id": 3,
+                    "output_name": "snpeff_output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SnpEff eff:",
+            "outputs": [
+                {
+                    "name": "snpeff_output",
+                    "type": "vcf"
+                }
+            ],
+            "position": {
+                "left": 775.6666870117188,
+                "top": 443.75
+            },
+            "post_job_actions": {
+                "HideDatasetActionsnpeff_output": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "snpeff_output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpeff/snpEff/4.3+T.galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "74aebe30fb52",
+                "name": "snpeff",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"annotations\": [\"-classic\", \"-hgvsOld\", \"-hgvs1LetterAa\"], \"chr\": \"\", \"csvStats\": \"false\", \"filter\": {\"specificEffects\": \"no\", \"__current_case__\": 0}, \"filterOut\": [\"-no-downstream\", \"-no-intergenic\", \"-no-intron\", \"-no-upstream\", \"-no-utr\"], \"generate_stats\": \"false\", \"input\": {\"__class__\": \"ConnectedValue\"}, \"inputFormat\": \"vcf\", \"noLog\": \"true\", \"offset\": \"default\", \"outputConditional\": {\"outputFormat\": \"vcf\", \"__current_case__\": 0}, \"snpDb\": {\"genomeSrc\": \"custom\", \"__current_case__\": 3, \"snpeff_db\": {\"__class__\": \"ConnectedValue\"}, \"codon_table\": \"Standard\"}, \"spliceRegion\": {\"setSpliceRegions\": \"no\", \"__current_case__\": 0}, \"spliceSiteSize\": null, \"udLength\": \"0\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "4.3+T.galaxy1",
+            "type": "tool",
+            "uuid": "34660e6a-780a-4d49-8644-3ead8b586b60",
+            "workflow_outputs": []
+        },
+        "12": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpsift/snpSift_extractFields/4.3+t.galaxy0",
+            "errors": null,
+            "id": 12,
+            "input_connections": {
+                "input": {
+                    "id": 10,
+                    "output_name": "snpeff_output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SnpSift Extract Fields",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 967.5499877929688,
+                "top": 200
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpsift/snpSift_extractFields/4.3+t.galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "2b3e65a4252f",
+                "name": "snpsift",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"empty_text\": \"\", \"extract\": \"\\\"EFF[*]. GENE\\\" POS REF ALT \\\"EFF[*]. GENE\\\" \\\"EFF[*].EFFECT\\\" \\\"EFF[*]. CODON\\\" \\\"EFF[*].AA\\\" \", \"input\": {\"__class__\": \"ConnectedValue\"}, \"one_effect_per_line\": \"false\", \"separator\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "4.3+t.galaxy0",
+            "type": "tool",
+            "uuid": "41faee68-5d0a-42fc-91b3-9a823afd5a00",
+            "workflow_outputs": []
+        },
+        "13": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpsift/snpSift_extractFields/4.3+t.galaxy0",
+            "errors": null,
+            "id": 13,
+            "input_connections": {
+                "input": {
+                    "id": 11,
+                    "output_name": "snpeff_output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "SnpSift Extract Fields",
+            "outputs": [
+                {
+                    "name": "output",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 967.5499877929688,
+                "top": 308.1333312988281
+            },
+            "post_job_actions": {
+                "HideDatasetActionoutput": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "output"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/snpsift/snpSift_extractFields/4.3+t.galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "2b3e65a4252f",
+                "name": "snpsift",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"empty_text\": \"\", \"extract\": \"\\\"EFF[*]. GENE\\\" POS REF ALT \\\"EFF[*]. GENE\\\" \\\"EFF[*].EFFECT\\\" \\\"EFF[*]. CODON\\\" \\\"EFF[*].AA\\\" \", \"input\": {\"__class__\": \"ConnectedValue\"}, \"one_effect_per_line\": \"false\", \"separator\": \"\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "4.3+t.galaxy0",
+            "type": "tool",
+            "uuid": "3932584c-fb39-4ebd-b589-5657e5099d3b",
+            "workflow_outputs": []
+        },
+        "14": {
+            "annotation": "",
+            "content_id": "remove_aa_artifact",
+            "errors": null,
+            "id": 14,
+            "input_connections": {
+                "input_tab": {
+                    "id": 12,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "remove aa artifact",
+            "outputs": [
+                {
+                    "name": "output_tab",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 1159.433349609375,
+                "top": 200
+            },
+            "post_job_actions": {
+                "RenameDatasetActionoutput_tab": {
+                    "action_arguments": {
+                        "newname": "Variants' Calling"
+                    },
+                    "action_type": "RenameDatasetAction",
+                    "output_name": "output_tab"
+                }
+            },
+            "tool_id": "remove_aa_artifact",
+            "tool_state": "{\"input_tab\": {\"__class__\": \"ConnectedValue\"}, \"minmax\": \"max\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.0",
+            "type": "tool",
+            "uuid": "c9647184-f548-42eb-a79e-3c04dcd0b61d",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "output_tab",
+                    "uuid": "d625b5a9-0219-44ed-8d8b-4f980087de04"
+                }
+            ]
+        },
+        "15": {
+            "annotation": "",
+            "content_id": "remove_aa_artifact",
+            "errors": null,
+            "id": 15,
+            "input_connections": {
+                "input_tab": {
+                    "id": 13,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "remove aa artifact",
+            "outputs": [
+                {
+                    "name": "output_tab",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 1159.433349609375,
+                "top": 294.73333740234375
+            },
+            "post_job_actions": {
+                "RenameDatasetActionoutput_tab": {
+                    "action_arguments": {
+                        "newname": "Minority Variants' Calling"
+                    },
+                    "action_type": "RenameDatasetAction",
+                    "output_name": "output_tab"
+                }
+            },
+            "tool_id": "remove_aa_artifact",
+            "tool_state": "{\"input_tab\": {\"__class__\": \"ConnectedValue\"}, \"minmax\": \"min\", \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.0",
+            "type": "tool",
+            "uuid": "b8e06096-88d9-4dcd-9ca6-bc0fdb9e13ad",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "output_tab",
+                    "uuid": "1899e523-b32c-4e52-9aa3-70d161929488"
+                }
+            ]
+        }
+    },
+    "tags": [
+        "SARS-CoV-2"
+    ],
+    "uuid": "3d69f98a-3545-4fe3-9526-8f7307184a1c",
+    "version": 44
+}

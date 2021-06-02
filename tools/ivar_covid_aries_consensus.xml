@@ -1,0 +1,48 @@
+<tool id="ivar_covid_aries_consensus" name="ivar covid aries consensus" version="3.1+galaxy0">
+    <description>Call consensus from aligned BAM file</description>
+    <requirements>
+      <requirement type="package" version="1.2">ivar</requirement>
+      <requirement type="package" version="1.9">samtools</requirement>
+      <yield />
+    </requirements>
+    <version_command>ivar version | grep version</version_command>
+    <command detect_errors="exit_code"><![CDATA[
+        #import re
+        #import subprocess
+        #set $idname = $subprocess.getoutput('cat ' + str($strainname))
+        #set $library = $subprocess.getoutput('cat ' + str($librarytype))
+        #set $clean_name = re.sub('[^\w\-]', '_', str($idname))
+        #if str( $library ) == "sang" or str( $library ) == "cons":
+            cat $uploaded_fasta > consensus.fa &&
+		#else:
+            ln -s '$input_bam' sorted.bam &&
+            samtools mpileup -A -d 0 -Q 0 sorted.bam | ivar consensus -p consensus -t $min_freq -n N -q $min_qual -m $min_depth &&
+        #end if    
+        sed -i "1s|.*|>$clean_name|" consensus.fa
+    ]]>    </command>
+    <inputs>
+        <param name="input_bam" type="data" format="bam" label="Bam file" help="Aligned reads, to trim primers and quality"/>
+        <param name="strainname" type="data" format="txt"  label="Set output FASTA ID with Strain name" />
+        <param name="librarytype" type="data" format="txt" label="library type" />
+        <param name="uploaded_fasta" type="data" format="fasta" label="Uploaded fasta file" />
+		<param name="min_qual" argument="-q" type="integer" min="0" value="20" label="Minimum quality score threshold to count base"/>
+        <param name="min_freq" argument="-t" type="float" min="0" max="1" value="0.2" label="Minimum frequency threshold">
+            <help>
+                <![CDATA[
+           0 - Majority or most common base <br/>
+         0.2 - Bases that make up at least 20% of the depth at a position <br/>
+         0.5 - Strict or bases that make up at least 50% of the depth at a position <br/>
+         0.9 - Strict or bases that make up at least 90% of the depth at a position <br/>
+           1 - Identical or bases that make up 100% of the depth at a position. Will have highest ambiguities 
+        ]]>
+            </help>
+        </param>
+        <param name="min_depth" argument="-m" type="integer" min="1" value="30" label="Minimum depth to call consensus"/>
+    </inputs>
+    <outputs>
+        <data name="consensus" format="fasta" label="${tool.name} on ${on_string} Consensus" from_work_dir="consensus.fa"/>
+    </outputs>
+    <citations>
+      <citation type="doi">10.1186/s13059-018-1618-7</citation>
+    </citations>
+</tool>

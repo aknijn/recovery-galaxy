@@ -1,0 +1,52 @@
+<tool id="pangolin" name="PANGOLIN" version="3">
+    <description>Phylogenetic Assignment of Named Global Outbreak LINeages</description>
+    <requirements>
+        <requirement type="package" version="3">pangolin</requirement>
+    </requirements>
+    <stdio>
+        <exit_code range="1:" level="fatal" description="Tool exception" />
+        <exit_code range=":-1" level="fatal" description="Tool exception" />
+    </stdio>
+    <version_command>pangolin --version</version_command>
+    <command>
+<![CDATA[
+    pangolin $query --min-length $minlength --max-ambig $maxambig --threads $threads --alignment
+]]>
+    </command>
+    <inputs>
+        <param name="query" format="fasta" type="data" label="Query fasta file of sequences to analyse" />
+        <param name="minlength" argument="--min-length" type="integer" value="10000" label="Minimum query length allowed for pangolin to attempt assignment"/>
+        <param name="maxambig" argument="--max-ambig" type="float" min="0" max="1" value="0.5" label="Maximum proportion of Ns allowed for pangolin to attempt assignment"/>
+        <param name="threads" argument="--threads" type="integer" value="1" label="Number of threads"/>
+    </inputs>
+
+    <outputs>
+		<data format="csv" name="lineage" from_work_dir="lineage_report.csv" label="${tool.name} on ${on_string}: lineage" />
+		<data format="csv" name="alignment" from_work_dir="sequences.aln.fasta" label="${tool.name} on ${on_string}: alignment" />
+   </outputs>
+
+    <tests>
+        <test>
+            <param name="query" value="test_consensus.fasta" />
+            <output name="lineage">
+                <assert_contents>
+                    <has_text text="C.11" />
+                    <has_text text="passed_qc" />
+                </assert_contents>
+            </output>
+        </test>
+    </tests>   
+    <help>
+**PANGOLIN** stands for "Phylogenetic Assignment of Named Global Outbreak LINeages".
+
+pangolin runs a multinomial logistic regression model trained against lineage assignments based on GISAID data.
+    </help>
+    <citations>
+      <citation type="bibtex">@ARTICLE{andrews_s,
+            author = {O'Toole, A and McCrone, J and Scher, E},
+            keywords = {bioinformatics, ngs, coronavirus},
+            title = {{Phylogenetic Assignment of Named Global Outbreak LINeages}},
+            url = {https://github.com/cov-lineages/pangolin}
+        }</citation>
+    </citations>
+</tool>
