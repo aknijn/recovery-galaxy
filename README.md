@@ -22,6 +22,7 @@ The other tools can be installed directly from the Galaxy Toolshed:
 
 *  QualiMap BamQC https://toolshed.g2.bx.psu.edu/repository?repository_id=d33f3da25bc5e2f2
 
+The database of the human genome can be downloaded at https://zenodo.org/record/4892851#.YLdyiqHONEY and has to be copied to the data folder.
 
 A preprint of RECoVERY is available at: https://doi.org/10.1101/2021.01.16.425365
 
