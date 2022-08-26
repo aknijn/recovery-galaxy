@@ -1,4 +1,4 @@
-<tool id="sarscov2genomes" name="SARS CoV-2 Genomes" version="3.1">
+<tool id="sarscov2genomes" name="SARS CoV-2 Genomes" version="4.0">
     <description>performs automatic construction and analysis of SARS-CoV-2 genomes from NGS sequencing data</description>
     <requirements>
         <requirement type="package" version="3.7">python</requirement>
@@ -16,7 +16,7 @@
     echo $strain > $strainname &&
     echo $library > $librarytype &&
     python
-      $__tool_directory__/SARS-CoV-2_3.1-Genomes.py
+      $__tool_directory__/SARS-CoV-2_4.0-Genomes.py
       --library $library -1 $input1 -2 $input2 
       --human_genome_aligned $human_genome_aligned --covidref_aligned $covidref_aligned
 	  --reference_genbank $reference_genbank --reference_fasta $reference_fasta --proteinentcovid19 $proteinentcovid19
@@ -28,7 +28,6 @@
         <param name="library" type="select" label="What kind of sequences are you using?">
             <option value="iont">Ion torrent</option>
             <option value="illu">Illumina</option>
-            <option value="nano">Nanopore</option>
 		</param>
 		<param name="input1" format="fastqsanger" type="data" label="FASTQ file #1" help="Must be of datatype &quot;fastqsanger&quot;" />
 		<param name="input2" format="fastqsanger" type="data" label="FASTQ file #2 (will only be used for Illumina, otherwise ignored)" help="Must be of datatype &quot;fastqsanger&quot;" />
